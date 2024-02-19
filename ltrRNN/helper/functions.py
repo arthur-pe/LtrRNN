@@ -70,7 +70,7 @@ def block_mask(dimensions: Iterable[int],
                 test_blocks_dimensions: Iterable[int],
                 fraction_test: float,
                 exact: bool = True,
-                device: str = 'cpu'):
+                device: str = ('cuda' if torch.cuda.is_available() else 'cpu')):
     """
     Builds train and test masks.
     The train mask has block of entries masked.

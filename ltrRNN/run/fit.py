@@ -19,7 +19,7 @@ def cross_validation(hyperparameters, neural_data, condition=None, times=None, e
     Cross-validate ltrRNN hyperparameters. The output is saved within a ./cv/runs/... directory.
 
     :param hyperparameters: Dictionary of hyperparameters (see example notebook).
-    :param neural_data: Numpy array of shape (time x trial x neuron). Can either be firing rate estimates (e.g. centered and whitened), or spikes.
+    :param neural_data: Numpy array of shape (time x trial x neuron). Can either be firing rate estimates (e.g. z-scored), or spikes.
     :param condition: Numpy array of shape (trial) indicating the experimental condition of each trial (int).
     :param times: Numpy array of shape (time) indicating time (e.g. within the experiment).
     :param epochs: Numpy array of shape (trial) indicating the epoch of the task (e.g. perturbed/not perturbed).
@@ -106,7 +106,7 @@ def fit(hyperparameters,
     Fits an ltrRNN to neural data. The output is saved within a ./runs/... directory.
 
     :param hyperparameters: Dictionary of hyperparameters (see example notebook).
-    :param neural_data: Numpy array of shape (time x trial x neuron). Can either be firing rate estimates (e.g. centered and whitened), or spikes.
+    :param neural_data: Numpy array of shape (time x trial x neuron). Can either be firing rate estimates (e.g. z-scored), or spikes.
     :param condition: Numpy array of shape (trial) indicating the experimental condition of each trial (int).
     :param times: Numpy array of shape (time) indicating time (e.g. within the experiment).
     :param epochs: Numpy array of shape (trial) indicating the epoch of the task (e.g. perturbed/not perturbed).

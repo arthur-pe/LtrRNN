@@ -45,7 +45,7 @@ def var_exp_per_pc(x, number_pc):
 
 
 def giga_projection(ax_giga, rnn_mp, x_projected, normalized_condition, cmap_per_condition, cmap, grad,
-                    max_time, min_trial, max_trial, steps, parameters):
+                    max_time, min_trial, max_trial, steps, times):
     """
     Projection on the columns of the tensor rank parameterization.
     """
@@ -62,10 +62,11 @@ def giga_projection(ax_giga, rnn_mp, x_projected, normalized_condition, cmap_per
                                                        condition_gradient=grad[min_trial:max_trial:steps],
                                                        linewidth=2.0, alpha_shadow=0.2)
 
+    go_cue = np.argmax(times>=0)
     facecolors = np.ones((trials_dimension, 4))
-    ax_giga.scatter(x_projected[parameters['preparatory_steps'], :max_trial:steps, 0],
-                    x_projected[parameters['preparatory_steps'], :max_trial:steps, 1],
-                    x_projected[parameters['preparatory_steps'], :max_trial:steps, 2],
+    ax_giga.scatter(x_projected[go_cue, :max_trial:steps, 0],
+                    x_projected[go_cue, :max_trial:steps, 1],
+                    x_projected[go_cue, :max_trial:steps, 2],
                     color=cmap(normalized_condition[:max_trial:steps])[:, :3],
                     facecolor=facecolors[:max_trial:steps],
                     s=20,
@@ -116,6 +117,7 @@ def sorted_by_peak(ax, rnn_activity, ts_experiment):
 
 def single_neurons(ax, ts_experiment, rnn_activity, normalized_condition, cmap_per_condition, trials=50):
     ax.set_title('Two neurons, trial:gradient')
+    trials = min(trials, list(rnn_activity.shape)[1])
     steps = int(list(rnn_activity.shape)[1] / trials)
     plot_2d.trajectories_over_time_per_condition(ax, ts_experiment, rnn_activity[:, ::steps, :2],
                                                  normalized_condition[::steps],

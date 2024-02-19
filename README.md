@@ -12,29 +12,21 @@ This package allows fitting a [low-tensor-rank recurrent neural network (ltrRNN)
 ## Installation 
 
 ```commandline
-pip install slicetca
+pip install ltrRNN
 ```
-
-## Full documentation
-
-The documentation can be found [here](https://github.com/arthur-pe/ltrRNN/blob/master/documentation.md).
 
 ## Examples
 
 ### Quick example 
 
 ```python
-import slicetca
-import torch
-from matplotlib import pyplot as plt
+import ltrRNN
 
-device = ('cuda' if torch.cuda.is_available() else 'cpu')
-
-# your_data is a numpy array of shape (trials, neurons, time).
-data = torch.tensor(your_data, dtype=torch.float, device=device)
+# your_data is a numpy array of shape (trials, neurons, time)
+# The dictionary of hyperparameters is described in the example notebook
+ltrRNN.fit(hyperparameters, your_data)
 
 # The real-time output of fitting can be found in the ./runs directory
-ltrRNN.fit(data, condition) # condition is of shape (trial)
 ```
 
 ### Notebook
@@ -44,6 +36,10 @@ See the [example notebook](https://github.com/arthur-pe/ltrRNN/blob/master/ltrRN
 <a target="_blank" href="https://github.com/arthur-pe/ltrRNN/blob/master/ltrRNN_example_notebook.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
+
+## Full documentation
+
+The documentation can be found [here](https://github.com/arthur-pe/ltrRNN/blob/master/documentation.md).
 
 ## Reference
 

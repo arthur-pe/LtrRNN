@@ -52,9 +52,9 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
         mask_trial = (torch.rand(trials_dimension, device=device) < (1 - parameters['fraction_masked']))
         full_mask = train_mask & mask_trial.unsqueeze(0).unsqueeze(-1)
 
-        l = torch.mean(((data_estimate - neural_data)[full_mask] )**2)
-        l_test = torch.mean(((data_estimate - neural_data)[test_mask] )**2)
-        l_total = torch.mean(((data_estimate - neural_data)[train_mask] )**2)
+        l = torch.mean(((data_estimate - neural_data)[full_mask])**2)
+        l_test = torch.mean(((data_estimate - neural_data)[test_mask])**2)
+        l_total = torch.mean(((data_estimate - neural_data)[train_mask])**2)
 
         # ========= Regularization =========
         reg_fn = torch.abs if parameters['regularization_function'] == 'abs' else torch.square
@@ -118,7 +118,7 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 # Big plot
                 if parameters['rank'] >= 3:
                     main_plot.giga_projection(ax_giga, rnn_mp, x_projected, normalized_condition, cmap_per_condition, cmap, grad,
-                                          max_time, min_trial, max_trial, steps, parameters)
+                                          max_time, min_trial, max_trial, steps, ts_experiment)
 
                 # Projection over time
                 main_plot.projection_over_time(axs[4], x_projected, normalized_condition, normalized_condition, grad, steps,
@@ -211,11 +211,10 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
     train_mask = torch.ones(list(neural_data.shape)) if train_mask is None else train_mask
     test_mask = torch.ones(list(neural_data.shape)) if test_mask is None else test_mask
 
-    prep, start, stop = 0, np.argmax(times >= 0), np.argmax(times)
+    prep, start, stop = 0, np.argmax(times >= 0), len(times)
     ts_experiment = times[prep:stop]*100
 
     neural_data = neural_data[start:stop] if not parameters['fit_preparatory'] else neural_data[prep:stop]
-
     time_dimension, trials_dimension, neurons_dimension = neural_data.shape
     condition_dimension = len(np.unique(condition))
 
@@ -283,7 +282,7 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
     optim = torch.optim.Adam(param, lr=parameters['learning_rate'])
 
     ts = torch.linspace(0, parameters['duration'], stop - start)
-    ts_preparatory = torch.linspace(0, (start - prep + 1) *(ts[1] - ts[0]), start - prep + 1)
+    ts_preparatory = torch.linspace(0, (start - prep + 1) * (ts[1] - ts[0]), start - prep + 1)
     ts_execution = ts
 
     if load_directory != '.':
