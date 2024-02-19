@@ -82,7 +82,7 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 ax_giga.cla()
 
                 # ========= Arrays to plot ==========
-                ts_experiment_prep = ts_experiment[:parameters['preparatory_steps' ] + 1]
+                ts_experiment_prep = ts_experiment[:np.argmax(ts_experiment >= 0) +1 ]
 
                 rnn_activity = net.activation(rnn_mp).numpy(force=True)
                 rnn_mp = rnn_mp.numpy(force=True)
@@ -211,7 +211,7 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
     train_mask = torch.ones(list(neural_data.shape)) if train_mask is None else train_mask
     test_mask = torch.ones(list(neural_data.shape)) if test_mask is None else test_mask
 
-    prep, start, stop = np.argmax(times >= 0) - parameters['preparatory_steps'], np.argmax(times >= 0), np.argmax(times)
+    prep, start, stop = 0, np.argmax(times >= 0), np.argmax(times)
     ts_experiment = times[prep:stop]*100
 
     neural_data = neural_data[start:stop] if not parameters['fit_preparatory'] else neural_data[prep:stop]
@@ -282,8 +282,8 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
 
     optim = torch.optim.Adam(param, lr=parameters['learning_rate'])
 
-    ts = torch.linspace(0, parameters['duration'], stop -start)
-    ts_preparatory = torch.linspace(0, (parameters['preparatory_steps'] +1 ) *(ts[1 ] -ts[0]), start - prep +1)
+    ts = torch.linspace(0, parameters['duration'], stop - start)
+    ts_preparatory = torch.linspace(0, (start - prep + 1) *(ts[1] - ts[0]), start - prep + 1)
     ts_execution = ts
 
     if load_directory != '.':
