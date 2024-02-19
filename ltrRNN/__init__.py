@@ -1,4 +1,4 @@
-from run import fit, cross_validation
+from .run import fit, cross_validation
 
 __version__ = '0.0.1'
 __author__ = 'Arthur Pellegrino'
