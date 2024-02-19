@@ -69,8 +69,8 @@ def block_mask(dimensions: Iterable[int],
                 train_blocks_dimensions: Iterable[int],
                 test_blocks_dimensions: Iterable[int],
                 fraction_test: float,
-                exact:bool = True,
-                device:str = 'cpu'):
+                exact: bool = True,
+                device: str = 'cpu'):
     """
     Builds train and test masks.
     The train mask has block of entries masked.
