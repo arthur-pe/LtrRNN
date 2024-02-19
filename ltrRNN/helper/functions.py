@@ -93,7 +93,7 @@ def block_mask(dimensions: Iterable[int],
     if not np.prod((np.array(train_blocks_dimensions)-np.array(test_blocks_dimensions))>=0):
         raise Exception('For all i it should be that train_blocks_dimensions[i]>=test_blocks_dimensions[i].')
 
-    number_blocks = int(fraction_test * np.prod(np.array(dimensions)) / np.prod(1 + 2 * np.array(train_blocks_dimensions)))
+    number_blocks = int(fraction_test * np.prod(np.array(dimensions)) / np.prod(1 + 2 * np.array(test_blocks_dimensions)))
 
     if exact:
         start = torch.zeros(flattened_max_dim, device=device)
