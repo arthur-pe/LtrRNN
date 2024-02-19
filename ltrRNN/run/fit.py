@@ -1,6 +1,6 @@
 from ltrRNN.helper import functions
 from ltrRNN.plotting import utils
-from training import train
+from .training import train
 
 import torch
 from matplotlib import pyplot as plt
