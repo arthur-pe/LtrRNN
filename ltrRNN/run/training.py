@@ -76,10 +76,6 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
         if training_iteration % parameters['test_freq'] == 0:
             with torch.no_grad():
 
-                iterator.set_description(f'Iteration: {training_iteration}, l_total: {l_total.item():.4e}, l_test:{l_test.item():.4e}, l_reg: {l_reg_total.item():.4e},\
-                      l_reg_control_prep:, {l_reg_control_prep.item():.4e}, l_reg_control_exec: {l_reg_control_exec.item():.4e},\
-                      l_reg_rnn: {l_reg_rnn.item():.4e}')
-
                 for i in axs:
                     for j in i:
                         if j is not None: j.cla()
@@ -185,6 +181,10 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
 
                 torch.save(sde_preparatory.state_dict(), directory + '/model.pt')
                 torch.save(rnn_to_data.state_dict(), directory + '/map.pt')
+
+                iterator.set_description(f'Iteration: {training_iteration}, l_total: {l_total.item():.4e}, l_test:{l_test.item():.4e}, l_reg: {l_reg_total.item():.4e},\
+                      l_reg_control_prep:, {l_reg_control_prep.item():.4e}, l_reg_control_exec: {l_reg_control_exec.item():.4e},\
+                      l_reg_rnn: {l_reg_rnn.item():.4e}')
 
                 # Criteria to stop optim
                 if len(losses_array )>=parameters['steps_std_convergence']:
