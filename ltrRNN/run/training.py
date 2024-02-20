@@ -14,7 +14,7 @@ from tqdm.auto import tqdm
 import sys
 
 if 'google.colab' in sys.modules:
-    from IPython import display, clear_output
+    from IPython.display import display, clear_output
 
 
 def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_to_data, neural_data,
