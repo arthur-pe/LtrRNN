@@ -172,14 +172,11 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
                 if training_iteration == 0: plt.savefig(directory + '/' + directory.split('/')[-1] + '-pre-training.pdf')
 
-                import time
-                time.sleep(2)
-
                 plt.pause(5) # Increase for some CPU configs
 
-                if 'google.colab' in sys.modules:
+                '''if 'google.colab' in sys.modules:
                     clear_output()
-                    display(fig)
+                    display(fig)'''
 
                 torch.save(sde_preparatory.state_dict(), directory + '/model.pt')
                 torch.save(rnn_to_data.state_dict(), directory + '/map.pt')
