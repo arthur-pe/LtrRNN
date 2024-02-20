@@ -11,6 +11,10 @@ import torch.nn as nn
 from matplotlib import pyplot as plt
 import numpy as np
 from tqdm.auto import tqdm
+import sys
+
+if 'google.colab' in sys.modules:
+    from IPython import display, clear_output
 
 
 def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_to_data, neural_data,
@@ -72,9 +76,9 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
         if training_iteration % parameters['test_freq'] == 0:
             with torch.no_grad():
 
-                iterator.set_description(f'Iteration{training_iteration}, l_total: {l_total.item()}, l_test:{l_test.item()}, l_reg: {l_reg_total.item()},\
-                      l_reg_control_prep:, {l_reg_control_prep.item()}, l_reg_control_exec: {l_reg_control_exec.item()},\
-                      l_reg_rnn: {l_reg_rnn.item()}')
+                iterator.set_description(f'Iteration: {training_iteration}, l_total: {l_total.item():.4e}, l_test:{l_test.item():.4e}, l_reg: {l_reg_total.item():.4e},\
+                      l_reg_control_prep:, {l_reg_control_prep.item():.4e}, l_reg_control_exec: {l_reg_control_exec.item():.4e},\
+                      l_reg_rnn: {l_reg_rnn.item():.4e}')
 
                 for i in axs:
                     for j in i:
@@ -170,6 +174,10 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
 
                 plt.draw()
                 plt.pause(5) # Increase for some CPU configs
+
+                if 'google.colab' in sys.modules:
+                    clear_output()
+                    display(fig)
 
                 plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
 

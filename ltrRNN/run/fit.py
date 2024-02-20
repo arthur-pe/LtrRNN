@@ -12,7 +12,7 @@ import os
 import yaml
 
 
-def cross_validation(hyperparameters, neural_data, condition=None, times=None, epochs=None, trial_ids=None, train_mask=None, test_mask=None,
+def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs=None, trial_ids=None, train_mask=None, test_mask=None,
                      cv_hyperparameters={'rnn_dim': [50, 200], 'rank': [1, 2, 3, 4, 5, 10, 20]}, seeds=(1, 2, 3),
                      device=('cuda' if torch.cuda.is_available() else 'cpu')):
     """

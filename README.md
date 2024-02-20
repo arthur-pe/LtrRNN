@@ -37,7 +37,7 @@ See the [example notebook](https://github.com/arthur-pe/ltrRNN/blob/master/ltrRN
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-## Full documentation
+## Documentation
 
 The documentation can be found [here](https://github.com/arthur-pe/ltrRNN/blob/master/documentation.md).
 
