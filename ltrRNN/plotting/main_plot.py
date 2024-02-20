@@ -25,8 +25,6 @@ def get_figure(rows, columns, directory):
 
     fig.suptitle('Dir:' + directory.split('/')[-1])
 
-    plt.show(block=False)
-
     return fig, axs, ax_giga
 
 
