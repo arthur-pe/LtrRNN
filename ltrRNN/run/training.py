@@ -15,6 +15,7 @@ import sys
 
 if 'google.colab' in sys.modules:
     from IPython.display import display, clear_output
+    from tqdm import tqdm
 
 
 def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_to_data, neural_data,
@@ -191,7 +192,7 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                     print(losses_array[-parameters['steps_std_convergence']:, 1].std())
 
         if len(losses_array )>=parameters['steps_std_convergence']:
-            if losses_array[-parameters['steps_std_convergence']: ,1].std( ) <parameters['min_std_convergence']:
+            if losses_array[-parameters['steps_std_convergence']:, 1].std() <parameters['min_std_convergence']:
                 break
 
         if parameters['optimize']:
