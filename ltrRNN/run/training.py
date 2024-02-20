@@ -172,11 +172,11 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 plt.draw()
                 plt.pause(5) # Increase for some CPU configs
 
+                plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
+
                 if 'google.colab' in sys.modules:
                     clear_output()
                     display(fig)
-
-                plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
 
                 if training_iteration == 0: plt.savefig(directory + '/' + directory.split('/')[-1] + '-0.pdf')
 
