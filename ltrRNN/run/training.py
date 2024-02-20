@@ -169,8 +169,11 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 ax = axs[0, 4]
                 main_plot.text(ax, parameters)
 
-                plt.savefig(directory + '/' + directory.split('/')[-1] + '.png')
-                if training_iteration == 0: plt.savefig(directory + '/' + directory.split('/')[-1] + '-pre-training.png')
+                plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
+                if training_iteration == 0: plt.savefig(directory + '/' + directory.split('/')[-1] + '-pre-training.pdf')
+
+                import time
+                time.sleep(2)
 
                 plt.pause(5) # Increase for some CPU configs
 
