@@ -169,10 +169,10 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 ax = axs[0, 4]
                 main_plot.text(ax, parameters)
 
+                plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
+
                 plt.draw()
                 plt.pause(5) # Increase for some CPU configs
-
-                plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
 
                 if 'google.colab' in sys.modules:
                     clear_output()
