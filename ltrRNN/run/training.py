@@ -213,8 +213,8 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
     times = np.linspace(0, 1, neural_data.shape[0]) if times is None else times
     epoch = np.zeros(neural_data.shape[1]) if epoch is None else epoch
     trial_ids = np.arange(neural_data.shape[1]) if trial_ids is None else trial_ids
-    train_mask = torch.ones(list(neural_data.shape)) if train_mask is None else train_mask
-    test_mask = torch.ones(list(neural_data.shape)) if test_mask is None else test_mask
+    train_mask = torch.ones(list(neural_data.shape), device=device).bool() if train_mask is None else train_mask
+    test_mask = torch.ones(list(neural_data.shape), device=device).bool() if test_mask is None else test_mask
 
     prep, start, stop = 0, np.argmax(times >= 0), len(times)
     ts_experiment = times[prep:stop]*100
