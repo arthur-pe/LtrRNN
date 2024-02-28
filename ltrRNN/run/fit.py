@@ -47,8 +47,6 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
     ax = fig.add_subplot()
     cmap = matplotlib.colormaps['Set2']
 
-    plt.show(block=False)
-
     for p1i, p1 in enumerate(cv_hyperparameters[keys[0]]):
         for p2i, p2 in enumerate(cv_hyperparameters[keys[1]]):
             for si, s in enumerate(seeds):
