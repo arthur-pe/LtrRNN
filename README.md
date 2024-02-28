@@ -31,7 +31,7 @@ ltrRNN.fit(hyperparameters, your_data)
 
 ### Notebook
 
-See the [example notebook](https://github.com/arthur-pe/ltrRNN/blob/master/ltrRNN_example_notebook.ipynb) for an application of ltrRNN to simulated data.
+See the [example notebook](https://colab.research.google.com/github/arthur-pe/LtrRNN/blob/main/ltrRNN_example_notebook.ipynb) for an application of ltrRNN to simulated data.
 
 <a target="_blank" href="https://github.com/arthur-pe/ltrRNN/blob/master/ltrRNN_example_notebook.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
