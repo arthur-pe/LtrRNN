@@ -37,10 +37,6 @@ See the [example notebook](https://github.com/arthur-pe/ltrRNN/blob/master/ltrRN
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-## Documentation
-
-The documentation can be found [here](https://github.com/arthur-pe/ltrRNN/blob/master/documentation.md).
-
 ## Reference
 
 A. Pellegrino<sub>@</sub>, N. A. Cayco-Gaijc<sup>†</sup>, A. Chadwick<sup>†</sup>. (2024). Low Tensor Rank Learning of Neural Dynamics. [https://proceedings.neurips.cc/paper_files/paper/2023/hash/27030ad2ec1d8f2c3847a64e382c30ca-Abstract-Conference.html](https://proceedings.neurips.cc/paper_files/paper/2023/hash/27030ad2ec1d8f2c3847a64e382c30ca-Abstract-Conference.html).

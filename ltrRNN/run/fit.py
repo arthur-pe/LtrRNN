@@ -10,6 +10,10 @@ import numpy as np
 from datetime import datetime
 import os
 import yaml
+import sys
+
+if 'google.colab' in sys.modules:
+    from IPython.display import display, clear_output
 
 
 def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs=None, trial_ids=None, train_mask=None, test_mask=None,
@@ -59,8 +63,8 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
                 if not os.path.exists(directory_run):
                     os.makedirs(directory_run)
                 try:
-                    l = train(hyperparameters, neural_data, condition, times, epochs, trial_ids, directory_run,
-                              train_mask, test_mask, '.', device=device)[1]
+                    l = train(hyperparameters, neural_data, condition, times, epochs, trial_ids,
+                              train_mask, test_mask, directory_run, '.', device=device)[1]
                 except Exception as e:
                     print('\n\n')
                     print(e)
@@ -88,8 +92,12 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
                 ax.legend()
 
                 plt.savefig(directory+'/cv_' + directory.split('/')[-1] +'.pdf')
-                plt.draw()
-                plt.pause(0.1)
+
+                if 'google.colab' in sys.modules:
+                    clear_output()
+                    display(fig)
+                else:
+                    plt.pause(0.1)
 
 
 def fit(hyperparameters,
