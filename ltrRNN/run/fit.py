@@ -37,9 +37,9 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
     :param trial_ids: Numpy array of shape (trial) indicating the true trial id within the experiment (e.g. if trials were discarded).
     :param train_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the gradient with respect to.
     :param test_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the test loss with resepct to.
+    :param cmap_condition: A matplotlib colormap function which takes an array of conditions (normalized between 0 and 1) and returns an array of colors.
     :param cv_hyperparameters: the hyperparameters which should be modified over the cross-validation grid. Note: supports only 2 hyperparameters for now.
     :param seeds: The seeds to use for each combination of hyperparameters so that the total number of runs is #hyperparameter1 x #hyperparameter2 x #seeds.
-    :param cmap_condition: A matplotlib colormap function which takes an array of conditions (normalized between 0 and 1) and returns an array of colors.
     :param device: Torch device.
     """
 
@@ -70,7 +70,7 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
                     os.makedirs(directory_run)
                 try:
                     l = train(hyperparameters, neural_data, condition, times, epochs, trial_ids,
-                              train_mask, test_mask, directory_run, '.', cmap_condition=cmap_condition, device=device)[1]
+                              train_mask, test_mask, cmap_condition, directory_run, '.', device=device)[1]
                 except Exception as e:
                     print('\n\n')
                     print(e)
@@ -128,8 +128,8 @@ def fit(hyperparameters,
     :param trial_ids: Numpy array of shape (trial) indicating the true trial id within the experiment (e.g. if trials were discarded).
     :param train_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the gradient with respect to.
     :param test_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the test loss with resepct to.
-    :param load_directory: If training is stopped, indicates the directory which contains /model.pt.
     :param cmap_condition: A matplotlib colormap function which takes an array of conditions (normalized between 0 and 1) and returns an array of colors.
+    :param load_directory: If training is stopped, indicates the directory which contains /model.pt.
     :param device: Torch device.
     """
 
@@ -138,5 +138,5 @@ def fit(hyperparameters,
     with open(directory+'/parameters.yaml', 'w') as f:
         yaml.dump(hyperparameters, f)
 
-    train(hyperparameters, neural_data, condition, times, epochs, trial_ids, train_mask, test_mask,
-         directory, load_directory, cmap_condition, device)
+    train(hyperparameters, neural_data, condition, times, epochs, trial_ids, train_mask, test_mask, cmap_condition,
+         directory, load_directory, device)

@@ -208,8 +208,8 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
     return losses_array[-parameters['steps_std_convergence']:].mean(axis=0)
 
 
-def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mask, test_mask,
-         directory, load_directory='.', cmap_condition=matplotlib.colormaps['hsv'],
+def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mask, test_mask, cmap_condition,
+         directory, load_directory='.',
          device=('cuda' if torch.cuda.is_available() else 'cpu')):
 
     torch.manual_seed(parameters['seed'])
