@@ -13,7 +13,13 @@ import numpy as np
 from tqdm.auto import tqdm
 import sys
 
-if 'google.colab' in sys.modules:
+
+def is_notebook():
+    import __main__ as main
+    return not hasattr(main, '__file__')
+
+
+if is_notebook():
     from IPython.display import display, clear_output
     from tqdm import tqdm
 
@@ -172,7 +178,7 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
                 plt.savefig(directory + '/' + directory.split('/')[-1] + '.pdf')
                 if training_iteration == 0: plt.savefig(directory + '/' + directory.split('/')[-1] + '-pre-training.pdf')
 
-                if 'google.colab' in sys.modules:
+                if is_notebook():
                     clear_output()
                     display(fig)
                 else:
@@ -203,7 +209,7 @@ def training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_t
 
 
 def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mask, test_mask,
-         directory, load_directory='.',
+         directory, load_directory='.', cmap_condition=matplotlib.colormaps['hsv'],
          device=('cuda' if torch.cuda.is_available() else 'cpu')):
 
     torch.manual_seed(parameters['seed'])
@@ -233,8 +239,7 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
     neural_data, condition, trial_ids = torch.tensor(neural_data, device=device), torch.tensor(condition, device=device, dtype=torch.long), torch.tensor \
         (trial_ids, device=device)
 
-    cmap = matplotlib.colormaps['hsv']
-    cmap_per_condition = [utils.get_cmap_black(cmap(i)) for i in np.unique(normalized_condition)]
+    cmap_per_condition = [utils.get_cmap_black(cmap_condition(i)) for i in np.unique(normalized_condition)]
 
     activation = torch.tanh
 
@@ -298,6 +303,6 @@ def train(parameters, neural_data, condition, times, epoch, trial_ids, train_mas
     return training_loop(sde_preparatory, sde_execution, net, condition_wise_map, rnn_to_data,
                  neural_data,
                  train_mask, test_mask, parameters, directory, epoch, epoch_starts, epoch_labels, optim,
-                 trials_dimension, trial_ids, cmap,
+                 trials_dimension, trial_ids, cmap_condition,
                  ts_execution, ts_preparatory, ts_experiment, normalized_condition, cmap_per_condition, device)
 

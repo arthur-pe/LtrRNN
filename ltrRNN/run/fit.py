@@ -12,12 +12,19 @@ import os
 import yaml
 import sys
 
-if 'google.colab' in sys.modules:
+
+def is_notebook():
+    import __main__ as main
+    return not hasattr(main, '__file__')
+
+
+if is_notebook():
     from IPython.display import display, clear_output
+    from tqdm import tqdm
 
 
 def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs=None, trial_ids=None, train_mask=None, test_mask=None,
-                     cv_hyperparameters={'rnn_dim': [50, 200], 'rank': [1, 2, 3, 4, 5, 10, 20]}, seeds=(1, 2, 3),
+                     cv_hyperparameters={'rnn_dim': [50, 200], 'rank': [1, 2, 3, 4, 5, 10, 20]}, seeds=(1, 2, 3), cmap_condition=matplotlib.colormaps['hsv'],
                      device=('cuda' if torch.cuda.is_available() else 'cpu')):
     """
     Cross-validate ltrRNN hyperparameters. The output is saved within a ./cv/runs/... directory.
@@ -32,6 +39,7 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
     :param test_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the test loss with resepct to.
     :param cv_hyperparameters: the hyperparameters which should be modified over the cross-validation grid. Note: supports only 2 hyperparameters for now.
     :param seeds: The seeds to use for each combination of hyperparameters so that the total number of runs is #hyperparameter1 x #hyperparameter2 x #seeds.
+    :param cmap_condition: A matplotlib colormap function which takes an array of conditions (normalized between 0 and 1) and returns an array of colors.
     :param device: Torch device.
     """
 
@@ -62,7 +70,7 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
                     os.makedirs(directory_run)
                 try:
                     l = train(hyperparameters, neural_data, condition, times, epochs, trial_ids,
-                              train_mask, test_mask, directory_run, '.', device=device)[1]
+                              train_mask, test_mask, directory_run, '.', cmap_condition=cmap_condition, device=device)[1]
                 except Exception as e:
                     print('\n\n')
                     print(e)
@@ -81,7 +89,7 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
                 ax.cla()
                 for pi, p in enumerate(cv_hyperparameters[keys[0]]):
                     ax.errorbar(cv_hyperparameters[keys[1]], cv_losses_mean[pi], cv_loss_std[pi], fmt='-o',
-                                label=keys[0]+'='+str(p),color=cmap(pi), linewidth=1.5)
+                                label=keys[0]+'='+str(p), color=cmap(pi), linewidth=1.5)
 
                 ax.set_xticks(cv_hyperparameters[keys[1]])
                 ax.set_xlabel(keys[1])
@@ -91,7 +99,7 @@ def grid_search(hyperparameters, neural_data, condition=None, times=None, epochs
 
                 plt.savefig(directory+'/cv_' + directory.split('/')[-1] +'.pdf')
 
-                if 'google.colab' in sys.modules:
+                if is_notebook():
                     clear_output()
                     display(fig)
                 else:
@@ -106,6 +114,7 @@ def fit(hyperparameters,
         trial_ids=None,
         train_mask=None,
         test_mask=None,
+        cmap_condition=matplotlib.colormaps['hsv'],
         load_directory='.',
         device=('cuda' if torch.cuda.is_available() else 'cpu')):
     """
@@ -120,6 +129,7 @@ def fit(hyperparameters,
     :param train_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the gradient with respect to.
     :param test_mask: Torch tensor of shape (time x trial x neuron) which indicates which entries to compute the test loss with resepct to.
     :param load_directory: If training is stopped, indicates the directory which contains /model.pt.
+    :param cmap_condition: A matplotlib colormap function which takes an array of conditions (normalized between 0 and 1) and returns an array of colors.
     :param device: Torch device.
     """
 
@@ -129,4 +139,4 @@ def fit(hyperparameters,
         yaml.dump(hyperparameters, f)
 
     train(hyperparameters, neural_data, condition, times, epochs, trial_ids, train_mask, test_mask,
-         directory, load_directory, device)
+         directory, load_directory, cmap_condition, device)
